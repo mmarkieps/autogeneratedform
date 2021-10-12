@@ -1,0 +1,208 @@
+<script runat="server">
+
+    Platform.Load("core", "1");
+    Platform.Response.SetResponseHeader("Strict-Transport-Security","max-age=200");
+   Platform.Response.SetResponseHeader("X-XSS-Protection","1; mode=block");
+   Platform.Response.SetResponseHeader("X-Frame-Options","Deny");
+   Platform.Response.SetResponseHeader("X-Content-Type-Options","nosniff");
+   Platform.Response.SetResponseHeader("Referrer-Policy","strict-origin-when-cross-origin");
+   Platform.Response.SetResponseHeader("Content-Security-Policy","default-src 'self'");
+    var options = {
+        "DataExtension" : "autoGenaratedForm"
+    }
+
+    var attributes = {
+        "FirstName" : {
+            "Type": "Text",
+            "Pattern": "",
+            "Label": "First name",
+            "Required": false,
+            "Placeholder": "Enter your first name"
+        },
+  
+        "EmailAddress": {
+            "Type": "Email",
+            "Pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,})$",
+            "Label": "Email",
+            "Required": false,
+            "Placeholder": "Enter your email"
+        }
+ 
+    }
+
+    var submit = (Request.Method() == "POST") ? true : false ;
+    var success = (!!isNotEmpty(Request.GetQueryStringParameter("success"))) ? true : false ;
+
+    if(!!submit) {
+
+        var insert = insertInDataExtension(options);
+
+        Redirect(getPageURL() + "?success=1", true);
+
+    } else if(!!success) {
+
+        Write("<strong>Thank you for submitting<strong><br><a href='" + getPageURL() + "'>Restart</a>");
+
+    } else {
+
+        buildForm(options, attributes);
+
+    }
+
+    function insertInDataExtension(options) {
+
+        var fields = {};
+        var list = getFieldNames(options.DataExtension);
+        var de_name = options.DataExtension;
+
+        for (n in list) {
+            var name = list[n];
+            var val = (Request.GetFormField(list[n]) != null) ? Request.GetFormField(list[n]) : "";
+            fields[name] = val;
+        }
+
+        fields["Id"] = timestamp();
+
+        var insert = splitKeysValues(fields);
+
+        Platform.Function.InsertData(de_name, insert.Keys, insert.Values);
+
+        return insert;
+
+    }
+
+    function buildForm(options, attributes) {
+
+        var html = "";
+        var fields = getFieldNames(options.DataExtension);
+
+        html += "<form action='" + getPageURL() + "' method='post'>";
+        html += buildFields(fields, attributes);
+        html += "<br>";
+        html += "<button>Send</button>";
+        html += "</form>"; 
+
+        Write(html);
+
+    }
+
+    function buildFields(fields, attributes) {
+
+        var html = "";
+        var exceptions = ["Id"];
+
+        for (n in fields) {
+
+            var field = attributes[fields[n]];
+            var name = fields[n];
+
+            if (field != null) {
+
+                var required = (field.Required != false) ? "required" : "";
+                var pattern = (!!isNotEmpty(field.Pattern)) ? "pattern='" + field.Pattern + "'" : "";
+                var label = (!!isNotEmpty(field.Label)) ? "<label for='" + name + "' >" + field.Label + ((required.length > 0) ? " *" : "") + "</label>" : "";
+                var placeholder = field.Placeholder;
+                var type = field.Type.toLowerCase();
+
+                html += label + "<br>";
+                html += "<input name='" + name + "' type='" + type + "' " + pattern + " placeholder='" + placeholder + "' " + required + ">" + "<br>";
+
+            } else if(!inArray(exceptions,name)) {
+
+                html += "<label for='" + name + "' >" + name + "</label>" + "<br>";
+                html += "<input name='" + name + "' type='text'>" + "<br>";
+
+            }
+            
+        }  
+
+        return html;
+    }
+
+    function getFieldNames(de_name) {
+
+        var out = [];
+        var attr = DataExtension.Retrieve({ Property: "Name", SimpleOperator: "equals", Value: de_name });
+        var de = DataExtension.Init(attr[0].CustomerKey);
+        var fields = de.Fields.Retrieve();
+
+        if(fields.length > 0) {
+            fields.sort(function (a, b) { return (a.Ordinal > b.Ordinal) ? 1 : -1 });
+            for (k in fields) {
+                if (!strStartsWith(fields[k].Name, "_") && fields[k].Name.toLowerCase()!=="id") out = out.concat(fields[k].Name);
+            }
+        }    
+
+        return out;
+
+    } 
+
+    function splitKeysValues(fields) {
+
+        var out = {
+            "Keys": [],
+            "Values": []
+        }
+        for (k in fields) {
+            var v = fields[k];
+            out.Keys.push(k);
+            out.Values.push(v);
+        }
+        return out;
+    }
+
+    function getPageURL() {
+
+        var page = Platform.Request.RequestURL;
+
+        if (page.indexOf("?") > 0) {
+            var out = page.substring(0, page.indexOf("?"));
+        } else {
+            var out = page;
+        }
+
+        return out;
+    }
+
+    function strStartsWith(str, search, pos) {
+        pos = !pos || pos < 0 ? 0 : +pos;
+        return str.substring(pos, pos + search.length) === search;
+    }   
+
+    function inArray(arr, k) {
+        var out = -1;
+        for (var i in arr) {
+            if (arr[i] == k) out = i;
+        }
+        return out;
+    }
+
+    function isNotEmpty(val) {
+        return (val != null && val.length > 0);
+    }
+
+    function timestamp() {
+
+        var now = new Date();
+        var out = now.getFullYear()
+            + addZero(now.getMonth() + 1)
+            + addZero(now.getDate())
+            + addZero(now.getHours())
+            + addZero(now.getMinutes())
+            + addZero(now.getSeconds())
+            + random(100, 999);
+        return out;
+
+        function addZero(n) {
+            return n < 10 ? '0' + n : n
+        }
+
+        function random(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+    }
+
+</script>

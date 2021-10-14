@@ -1,3 +1,6 @@
+
+<!-- https://mc5x5rqks68-f67k0fy4h7dd59w1.pub.sfmc-content.com/vs4am0o4mfp -->
+
 <!doctype html>
 <html lang="en">
 
@@ -31,7 +34,7 @@
 
 <body class="d-flex flex-column min-vh-100">
 
-    <header class=" text-center bg-dark text-white  d-flex align-items-center justify-content-center mb-md-5">
+    <header class=" text-center bg-info text-white  d-flex align-items-center justify-content-center mb-md-5">
         <h1 class="">lorem ipsum</h1>
     </header>
 
@@ -111,10 +114,10 @@
                 var html = "";
                 var fields = getFieldNames(options.DataExtension);
 
-                html += "<form action='" + getPageURL() + "' method='post'>";
+                html += "<form action='" + getPageURL() + "' method='post' class=' border border-info bg-light p-1 p-md-3 m-1 mt-md-1 mr-md-5 ml-md-5 mb-md-0 col col-11 col-md-6 text-center'>";
                 html += buildFields(fields, attributes);
                 html += "<br>";
-                html += "<button>Send</button>";
+                html += "<button class=' btn-info rounded align-self-center'>Send</button>";
                 html += "</form>";
 
                 Write(html);
@@ -244,7 +247,7 @@
 
     </section>
 
-    <footer class=" text-center bg-dark text-white  d-flex align-items-center justify-content-center mt-auto ">
+    <footer class=" text-center bg-info text-white  d-flex align-items-center justify-content-center mt-auto ">
         <div>
             ©mm
         </div>

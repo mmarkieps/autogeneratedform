@@ -43,7 +43,8 @@
             var headerValues = [s1.concat(accessToken)];
             var result = HTTP.Post(deleteUrl, contentType, payload1, headerNames, headerValues);
             var parsedResult = Stringify(Platform.Function.ParseJSON(result.Response[0]));
-            Write("code                 "   +Stringify(result.statusCode));
+            //does not work
+            Write("code                 "   +Stringify(result.operationInitiated));
             Write(parsedResult);
             Platform.Function.InsertData("mmApiDeleteResponse", ["code"], [parsedResult]);
 

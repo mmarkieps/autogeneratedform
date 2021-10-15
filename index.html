@@ -30,14 +30,27 @@
     </script>
 
 <style>
+    body
+    {
 
+ /* fallback for old browsers */
+ background: #30cfd0;
+
+/* Chrome 10-25, Safari 5.1-6 */
+bbackground: -webkit-linear-gradient(to right, rgba(48, 207, 208, 0.5), rgba(51, 8, 103, 0.5));
+
+/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+bbackground: linear-gradient(to right, rgba(48, 207, 208, 0.5), rgba(51, 8, 103, 0.5));
+
+ font-family: "Copperplate";
+    }
 </style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 
     <header class=" text-center bg-transparent text-white  d-flex align-items-center justify-content-center mb-md-5">
-        <h1 class="">delete form tes</h1>
+        <h1 class="">delete form </h1>
     </header>
 
     <section class="text-center  d-flex flex-column align-items-center justify-content-center">
@@ -145,12 +158,12 @@
                         var type = field.Type.toLowerCase();
 
                         html += label + "<br>";
-                        html += "<input name='" + name + "' type='" + type + "' " + pattern + " placeholder='" + placeholder + "' " + required + ">" + "<br>";
+                        html += "<input  class='w-100'  name='" + name + "' type='" + type + "' " + pattern + " placeholder='" + placeholder + "' " + required + ">" + "<br>";
 
                     } else if (!inArray(exceptions, name)) {
 
                         html += "<label for='" + name + "' >" + name + "</label>" + "<br>";
-                        html += "<input name='" + name + "' type='text'>" + "<br>";
+                        html += "<input   class='w-100' name='" + name + "' type='text'>" + "<br>";
 
                     }
 

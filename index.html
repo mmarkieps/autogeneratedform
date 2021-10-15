@@ -1,4 +1,3 @@
-
 <!-- https://mc5x5rqks68-f67k0fy4h7dd59w1.pub.sfmc-content.com/vs4am0o4mfp -->
 
 <!doctype html>
@@ -16,7 +15,7 @@
     <link rel="stylesheet" href="%%=CloudPagesURL(7961)=%%">
 
 
-    <title >delete form</title>
+    <title>delete form</title>
 
     <link rel="shortcut icon" type="image/x-icon"
         href="https://image.s10.sfmc-content.com/lib/fe4715707564047e761471/m/1/e47a902b-80db-48dc-bc12-57f995bce5bf.png" />
@@ -29,9 +28,9 @@
         Platform.Response.SetResponseHeader("Content-Security-Policy", "default-src 'self' https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css https://image.s10.sfmc-content.com/lib/fe4715707564047e761471/m/1/e47a902b-80db-48dc-bc12-57f995bce5bf.png");
     </script>
 
-<style>
+    <style>
 
-</style>
+    </style>
 </head>
 
 <body class="d-flex flex-column vh-100">
@@ -72,16 +71,27 @@
 
             var submit = (Request.Method() == "POST") ? true : false;
             var success = (!!isNotEmpty(Request.GetQueryStringParameter("success"))) ? true : false;
-
+            if (success) {
+                var successValue = Request.GetQueryStringParameter("success") == 1 ? true : false;
+            }
             if (!!submit) {
 
-                var insert = insertInDataExtension(options);
+                var rows = insertInDataExtension(options);
+                if (rows === 1) {
+                    Redirect(getPageURL() + "?success=1", true);
+                }
+                else {
+                    Redirect(getPageURL() + "?success=0", true);
+                }
 
-                Redirect(getPageURL() + "?success=1", true);
 
             } else if (!!success) {
-
-                Write("<strong class='h2'>Thank you for submitting<strong><br><a class='h2' href='" + getPageURL() + "'>Restart</a>");
+                if (successValue == true) {
+                    Write("<strong class='h2'>Thank you for submitting<strong><br><a class='h2' href='" + getPageURL() + "'>Restart</a>");
+                }
+                else {
+                    Write("<strong class='h2'>Sorry, something went wrong.<strong><br><a class='h2' href='" + getPageURL() + "'>Restart</a>");
+                }
 
             } else {
 
@@ -105,9 +115,9 @@
 
                 var insert = splitKeysValues(fields);
 
-                Platform.Function.InsertData(de_name, insert.Keys, insert.Values);
+                var rows = Platform.Function.InsertData(de_name, insert.Keys, insert.Values);
 
-                return insert;
+                return rows;
 
             }
 
@@ -260,4 +270,5 @@
 
 
 </body>
+
 </html>

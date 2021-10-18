@@ -44,7 +44,7 @@
             var result = HTTP.Post(deleteUrl, contentType, payload1, headerNames, headerValues);
             var parsedResult = Stringify(Platform.Function.ParseJSON(result.Response[0]));
             
-            Write("code                 "   +Stringify(result.statusCode));
+            Write("code                 "   +Stringify(result.Response[0].statusCode));
 
             for(var i=0; i<rows.length;i++) 
 

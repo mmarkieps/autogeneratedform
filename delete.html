@@ -42,8 +42,8 @@
             var s1 = "Bearer ";
             var headerValues = [s1.concat(accessToken)];
             var result = HTTP.Post(deleteUrl, contentType, payload1, headerNames, headerValues);
-            var parsedResult = Stringify(Platform.Function.ParseJSON(result));
-            
+            var parsedResult = Stringify(Platform.Function.ParseJSON(result.Response[0]));
+            Write("code                 "   +parsedResult);
             Write("code                 "   +Stringify(result));
 
             for(var i=0; i<rows.length;i++) 

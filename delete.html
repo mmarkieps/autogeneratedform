@@ -43,8 +43,8 @@
             var headerValues = [s1.concat(accessToken)];
             var result = HTTP.Post(deleteUrl, contentType, payload1, headerNames, headerValues);
             var parsedResult = Stringify(Platform.Function.ParseJSON(result));
-            Write("code                 "   +parsedResult);
-            Write("code                 "   +Stringify(result.statusCode));
+            
+            Write("code                 "   +Stringify(result));
 
             for(var i=0; i<rows.length;i++) 
 

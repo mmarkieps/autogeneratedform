@@ -126,7 +126,7 @@
                 var html = "";
                 var fields = getFieldNames(options.DataExtension);
 
-                html += "<form action='" + getPageURL() + "' method='post' class=' border border-info bg-info p-1 p-md-3 m-1 mt-md-1 mr-md-5 ml-md-5 mb-md-0 col col-11 col-md-6 text-center'>";
+                html += "<form action='" + getPageURL() + "' method='post' class=' border rounded border-info bg-info p-1 p-md-3 m-1 mt-md-1 mr-md-5 ml-md-5 mb-md-0 col col-11 col-md-6 text-center'>";
                 html += buildFields(fields, attributes);
                 html += "<br>";
                 html += "<button class=' btn-info rounded align-self-center'>Send</button>";

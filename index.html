@@ -177,7 +177,10 @@ Write(Stringify(fields))
                 if (fields.length > 0) {
                     fields.sort(function (a, b) { return (a.Ordinal > b.Ordinal) ? 1 : -1 });
                     for (k in fields) {
-                        if (!strStartsWith(fields[k].Name, "_") && fields[k].Name.toLowerCase() !== "id") out = out.concat(fields[k].Name);
+                        if (!strStartsWith(fields[k].Name, "_") && fields[k].Name.toLowerCase() !== "id")
+                        {
+                            out = out.concat(fields[k].Name);
+                        } 
                     }
                 }
 
@@ -202,7 +205,7 @@ Write(Stringify(fields))
             function getPageURL() {
 
                 var page = Platform.Request.RequestURL;
-
+//removes query parameters if they exist
                 if (page.indexOf("?") > 0) {
                     var out = page.substring(0, page.indexOf("?"));
                 } else {
@@ -214,6 +217,7 @@ Write(Stringify(fields))
 
             function strStartsWith(str, search, pos) {
                 pos = !pos || pos < 0 ? 0 : +pos;
+                Write("pos           " +pos);
                 return str.substring(pos, pos + search.length) === search;
             }
 

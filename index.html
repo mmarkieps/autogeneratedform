@@ -109,7 +109,7 @@
                     fields[name] = val;
                 }
 
-                fields["Id"] = timestamp();
+                fields["Id"] = getTimestampWithRandom();
 
                 var insert = splitKeysValues(fields);
 
@@ -215,16 +215,17 @@ Write(Stringify(fields))
                 return out;
             }
 
-            function strStartsWith(str, search, pos) {
-                pos = !pos || pos < 0 ? 0 : +pos;
-                Write("pos           " +pos);
-                return str.substring(pos, pos + search.length) === search;
+            function strStartsWith(str, searched) {
+               
+               
+                return str.substring(0, searched.length) === search;
             }
 
-            function inArray(arr, k) {
+            function inArray(arr, searched) {
+                //returns index of last occurrence of searched
                 var out = -1;
                 for (var i in arr) {
-                    if (arr[i] == k) out = i;
+                    if (arr[i] == searched) out = i;
                 }
                 return out;
             }
@@ -233,8 +234,8 @@ Write(Stringify(fields))
                 return (val != null && val.length > 0);
             }
 
-            function timestamp() {
-
+            function getTimestampWithRandom() {
+//adds timestamp with random number
                 var now = new Date();
                 var out = now.getFullYear()
                     + addZero(now.getMonth() + 1)
